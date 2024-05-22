@@ -4,7 +4,7 @@ import datetime
 
 from singer_sdk.testing import get_tap_test_class
 
-from tap_quok_sqlite.tap import Tapquok-sqlite
+from tap_quok.tap import TapQuok
 
 SAMPLE_CONFIG = {
     "start_date": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d"),
@@ -13,8 +13,8 @@ SAMPLE_CONFIG = {
 
 
 # Run standard built-in tap tests from the SDK:
-TestTapquok-sqlite = get_tap_test_class(
-    tap_class=Tapquok-sqlite,
+TestTapQuok = get_tap_test_class(
+    tap_class=TapQuok,
     config=SAMPLE_CONFIG,
 )
 

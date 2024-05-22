@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "tap-quok-sqlite"
+name = "tap-quok"
 version = "0.0.1"
-description = "`tap-quok-sqlite` is a Singer tap for quok-sqlite, built with the Meltano Singer SDK."
+description = "`tap-quok` is a Singer tap for Quok, built with the Meltano Singer SDK."
 readme = "README.md"
 authors = ["Quoc Nguyen <quoc.nguyen@ascenda.com>"]
 keywords = [
     "ELT",
-    "quok-sqlite",
+    "Quok",
 ]
 classifiers = [
     "Intended Audience :: Developers",
@@ -38,7 +38,7 @@ warn_unused_configs = true
 plugins = "sqlmypy"
 
 [tool.ruff]
-src = ["tap_quok_sqlite"]
+src = ["tap_quok"]
 target-version = "py38"
 
 [tool.ruff.lint]
@@ -54,7 +54,7 @@ select = ["ALL"]
 allow-star-arg-any = true
 
 [tool.ruff.lint.isort]
-known-first-party = ["tap_quok_sqlite"]
+known-first-party = ["tap_quok"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
@@ -65,4 +65,4 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 # CLI declaration
-tap-quok-sqlite = 'tap_quok_sqlite.tap:Tapquok-sqlite.cli'
+tap-quok = 'tap_quok.tap:TapQuok.cli'

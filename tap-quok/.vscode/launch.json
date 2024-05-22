@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "tap-quok-sqlite",
+            "name": "tap-quok",
             "type": "debugpy",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "program": "tap_quok_sqlite",
+            "program": "tap_quok",
             "justMyCode": false,
             "args": [
                 "--config",

@@ -1,6 +1,6 @@
-# tap-quok-sqlite
+# tap-quok
 
-`tap-quok-sqlite` is a Singer tap for quok-sqlite.
+`tap-quok` is a Singer tap for Quok.
 
 Built with the [Meltano Tap SDK](https://sdk.meltano.com) for Singer Taps.
 
@@ -13,13 +13,13 @@ Developer TODO: Update the below as needed to correctly describe the install pro
 Install from PyPi:
 
 ```bash
-pipx install tap-quok-sqlite
+pipx install tap-quok
 ```
 
 Install from GitHub:
 
 ```bash
-pipx install git+https://github.com/ORG_NAME/tap-quok-sqlite.git@main
+pipx install git+https://github.com/ORG_NAME/tap-quok.git@main
 ```
 
 -->
@@ -34,7 +34,7 @@ Developer TODO: Provide a list of config options accepted by the tap.
 This section can be created by copy-pasting the CLI output from:
 
 ```
-tap-quok-sqlite --about --format=markdown
+tap-quok --about --format=markdown
 ```
 -->
 
@@ -42,7 +42,7 @@ A full list of supported settings and capabilities for this
 tap is available by running:
 
 ```bash
-tap-quok-sqlite --about
+tap-quok --about
 ```
 
 ### Configure using environment variables
@@ -59,14 +59,14 @@ Developer TODO: If your tap requires special access on the source system, or any
 
 ## Usage
 
-You can easily run `tap-quok-sqlite` by itself or in a pipeline using [Meltano](https://meltano.com/).
+You can easily run `tap-quok` by itself or in a pipeline using [Meltano](https://meltano.com/).
 
 ### Executing the Tap Directly
 
 ```bash
-tap-quok-sqlite --version
-tap-quok-sqlite --help
-tap-quok-sqlite --config CONFIG --discover > ./catalog.json
+tap-quok --version
+tap-quok --help
+tap-quok --config CONFIG --discover > ./catalog.json
 ```
 
 ## Developer Resources
@@ -89,10 +89,10 @@ Create tests within the `tests` subfolder and
 poetry run pytest
 ```
 
-You can also test the `tap-quok-sqlite` CLI interface directly using `poetry run`:
+You can also test the `tap-quok` CLI interface directly using `poetry run`:
 
 ```bash
-poetry run tap-quok-sqlite --help
+poetry run tap-quok --help
 ```
 
 ### Testing with [Meltano](https://www.meltano.com)
@@ -112,7 +112,7 @@ Next, install Meltano (if you haven't already) and any needed plugins:
 # Install meltano
 pipx install meltano
 # Initialize meltano within this directory
-cd tap-quok-sqlite
+cd tap-quok
 meltano install
 ```
 
@@ -120,9 +120,9 @@ Now you can test and orchestrate using Meltano:
 
 ```bash
 # Test invocation:
-meltano invoke tap-quok-sqlite --version
+meltano invoke tap-quok --version
 # OR run a test `elt` pipeline:
-meltano elt tap-quok-sqlite target-jsonl
+meltano elt tap-quok target-jsonl
 ```
 
 ### SDK Dev Guide

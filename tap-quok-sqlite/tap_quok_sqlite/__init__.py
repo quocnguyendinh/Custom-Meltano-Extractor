@@ -1,1 +1,0 @@
-"""Tap for quok-sqlite."""

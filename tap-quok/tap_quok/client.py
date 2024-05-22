@@ -1,6 +1,6 @@
 """SQL client handling.
 
-This includes quok-sqliteStream and quok-sqliteConnector.
+This includes QuokStream and QuokConnector.
 """
 
 from __future__ import annotations
@@ -11,8 +11,8 @@ import sqlalchemy  # noqa: TCH002
 from singer_sdk import SQLConnector, SQLStream
 
 
-class quok-sqliteConnector(SQLConnector):
-    """Connects to the quok-sqlite SQL source."""
+class QuokConnector(SQLConnector):
+    """Connects to the Quok SQL source."""
 
     def get_sqlalchemy_url(self, config: dict) -> str:
         """Concatenate a SQLAlchemy URL for use in connecting to the source.
@@ -72,10 +72,10 @@ class quok-sqliteConnector(SQLConnector):
         return SQLConnector.to_sql_type(jsonschema_type)
 
 
-class quok-sqliteStream(SQLStream):
-    """Stream class for quok-sqlite streams."""
+class QuokStream(SQLStream):
+    """Stream class for Quok streams."""
 
-    connector_class = quok-sqliteConnector
+    connector_class = QuokConnector
 
     def get_records(self, partition: dict | None) -> Iterable[dict[str, Any]]:
         """Return a generator of record-type dictionary objects.

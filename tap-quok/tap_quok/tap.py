@@ -1,18 +1,18 @@
-"""quok-sqlite tap class."""
+"""Quok tap class."""
 
 from __future__ import annotations
 
 from singer_sdk import SQLTap
 from singer_sdk import typing as th  # JSON schema typing helpers
 
-from tap_quok_sqlite.client import quok-sqliteStream
+from tap_quok.client import QuokStream
 
 
-class Tapquok-sqlite(SQLTap):
-    """quok-sqlite tap class."""
+class TapQuok(SQLTap):
+    """Quok tap class."""
 
-    name = "tap-quok-sqlite"
-    default_stream_class = quok-sqliteStream
+    name = "tap-quok"
+    default_stream_class = QuokStream
 
     # TODO: Update this section with the actual config values you expect:
     config_jsonschema = th.PropertiesList(
@@ -44,4 +44,4 @@ class Tapquok-sqlite(SQLTap):
 
 
 if __name__ == "__main__":
-    Tapquok-sqlite.cli()
+    TapQuok.cli()
