@@ -17,28 +17,25 @@ class TapQuok(SQLTap):
     # TODO: Update this section with the actual config values you expect:
     config_jsonschema = th.PropertiesList(
         th.Property(
-            "auth_token",
+            "database",
             th.StringType,
-            required=True,
-            secret=True,  # Flag config as protected.
-            description="The token to authenticate against the API service",
+            description="The name of the database to connect to",
         ),
         th.Property(
-            "project_ids",
-            th.ArrayType(th.StringType),
-            required=True,
-            description="Project IDs to replicate",
-        ),
-        th.Property(
-            "start_date",
-            th.DateTimeType,
-            description="The earliest record date to sync",
-        ),
-        th.Property(
-            "api_url",
+            "filtered_schema",
             th.StringType,
-            default="https://api.mysample.com",
-            description="The url for the API service",
+            required=False,
+            description="The string of considered schemas (which is split by comma)",
+        ),
+        th.Property(
+            "default_replication_method",
+            th.StringType,
+            default="FULL_TABLE",
+            allowed_values=["FULL_TABLE", "INCREMENTAL"],
+            description=(
+                "Replication method to use if there is not a catalog entry to override "
+                "this choice. One of `FULL_TABLE` or `INCREMENTAL`."
+            ),
         ),
     ).to_dict()
 

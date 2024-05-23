@@ -70,6 +70,11 @@ class QuokConnector(SQLConnector):
         
         return type_mapping.get("string")
 
+    def get_schema_names(self, engine: sqlalchemy.Engine, inspected: sqlalchemy.Inspector) -> list[str]:
+        if "filtered_schema" in self.config:
+            return self.config["filtered_schema"].split(",")
+        return super().get_schema_names(engine, inspected)
+
 class QuokStream(SQLStream):
     """Stream class for Quok streams."""
 
@@ -91,4 +96,23 @@ class QuokStream(SQLStream):
         # This is helpful if the source database provides batch-optimized record
         # retrieval.
         # If no overrides or optimizations are needed, you may delete this method.
-        yield from super().get_records(partition)
+        selected_columns = self.get_selected_schema().get("properties").keys()
+        table = self.connector.get_table(
+            full_table_name=self.fully_qualified_name,
+            column_names=selected_columns
+        )
+        query = table.select()
+        if self.replication_key:
+            replicated_key_col = table.columns[self.replication_key]
+            query = query.order_by(replicated_key_col.asc())
+
+            start_val = self.get_starting_replication_key_value(context=partition)
+            if start_val:
+                query = query.where(replicated_key_col >= start_val)
+            
+            with self.connector._connect() as conn:
+                for record in conn.execute(query):
+                    transformed_record = self.post_process(record)
+                    if transformed_record is None:
+                        continue
+                    yield transformed_record
