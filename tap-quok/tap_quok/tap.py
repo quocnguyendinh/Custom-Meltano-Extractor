@@ -5,7 +5,9 @@ from __future__ import annotations
 from singer_sdk import SQLTap
 from singer_sdk import typing as th  # JSON schema typing helpers
 
-from tap_quok.client import QuokStream
+from functools import cached_property
+
+from tap_quok.client import QuokStream, QuokConnector
 
 
 class TapQuok(SQLTap):
@@ -39,6 +41,11 @@ class TapQuok(SQLTap):
         ),
     ).to_dict()
 
+    @cached_property
+    def connector(self) -> QuokConnector:
+        return QuokConnector(
+            config=dict(self.config),
+        )
 
 if __name__ == "__main__":
     TapQuok.cli()
