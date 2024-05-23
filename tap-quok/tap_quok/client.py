@@ -10,6 +10,8 @@ from typing import Any, Iterable
 import sqlalchemy  # noqa: TCH002
 from singer_sdk import SQLConnector, SQLStream
 
+from singer_sdk import typing as th  # JSON schema typing helpers
+
 
 class QuokConnector(SQLConnector):
     """Connects to the Quok SQL source."""
@@ -24,13 +26,7 @@ class QuokConnector(SQLConnector):
             SQLAlchemy connection string
         """
         # TODO: Replace this with a valid connection string for your source:
-        return (
-            f"awsathena+rest://{config['aws_access_key_id']}:"
-            f"{config['aws_secret_access_key']}@athena"
-            f".{config['aws_region']}.amazonaws.com:443/"
-            f"{config['schema_name']}?"
-            f"s3_staging_dir={config['s3_staging_dir']}"
-        )
+        return f"sqlite:///{config["database"]}.db"
 
     @staticmethod
     def to_jsonschema_type(
@@ -52,25 +48,27 @@ class QuokConnector(SQLConnector):
         """
         # Optionally, add custom logic before calling the parent SQLConnector method.
         # You may delete this method if overrides are not needed.
-        return SQLConnector.to_jsonschema_type(from_type)
+        type_mapping = {
+            "string": th.StringType(),
+            "integer": th.IntegerType(),
+            "float": th.NumberType(),
+            "boolean": th.BooleanType(),
+            "datetime": th.DateTimeType(),
+            "date": th.DateType(),
+            "time": th.TimeType(),
+            "numeric": th.NumberType(),
+            "largebinary": th.StringType()
+        }
 
-    @staticmethod
-    def to_sql_type(jsonschema_type: dict) -> sqlalchemy.types.TypeEngine:
-        """Returns a JSON Schema equivalent for the given SQL type.
+        if isinstance(from_type, sqlalchemy.types.TypeEngine):
+            sql_type = from_type.__name__
+        else:
+            sql_type = from_type
 
-        Developers may optionally add custom logic before calling the default
-        implementation inherited from the base class.
-
-        Args:
-            jsonschema_type: A dict
-
-        Returns:
-            SQLAlchemy type
-        """
-        # Optionally, add custom logic before calling the parent SQLConnector method.
-        # You may delete this method if overrides are not needed.
-        return SQLConnector.to_sql_type(jsonschema_type)
-
+        if sql_type.lower() in type_mapping.keys():
+            return type_mapping.get(sql_type.lower())
+        
+        return type_mapping.get("string")
 
 class QuokStream(SQLStream):
     """Stream class for Quok streams."""
