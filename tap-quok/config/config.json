@@ -1,0 +1,11 @@
+{
+    "start_date": "2024-05-24",
+    "database": "test",
+    "filtered_objects": [
+        {
+            "table": "test_table",
+            "is_view": false
+        }
+    ],
+    "default_replication_method": "FULL_TABLE"
+}

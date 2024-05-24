@@ -69,6 +69,11 @@ tap-quok --help
 tap-quok --config CONFIG --discover > ./catalog.json
 ```
 
+For testing locally, we can use the config file in `./config/config.json` (can store this in env var) or can directly enter this:
+```bash
+tap-quok --config ./config/config.json --discover > ./catalog.json
+```
+
 ## Developer Resources
 
 Follow these instructions to contribute to this project.
