@@ -24,12 +24,6 @@ class TapQuok(SQLTap):
             description="The name of the database to connect to",
         ),
         th.Property(
-            "filtered_schema",
-            th.StringType,
-            required=False,
-            description="The string of considered schemas (which is split by comma)",
-        ),
-        th.Property(
             "default_replication_method",
             th.StringType,
             default="FULL_TABLE",
@@ -39,6 +33,28 @@ class TapQuok(SQLTap):
                 "this choice. One of `FULL_TABLE` or `INCREMENTAL`."
             ),
         ),
+        th.Property(
+            "filtered_objects",
+            th.ArrayType(
+                th.ObjectType(
+                    th.Property(
+                        "table",
+                        th.StringType,
+                        required=True,
+                        description="The table name to be replicated",
+                    ),
+                    th.Property(
+                        "is_view",
+                        th.BooleanType,
+                        required=False,
+                        default=False,
+                        description="The flag to indicate if the object is a view",
+                    ),
+                ),
+            ),
+            required=True,
+            description="The list of objects to be replicated",
+        )
     ).to_dict()
 
     @cached_property

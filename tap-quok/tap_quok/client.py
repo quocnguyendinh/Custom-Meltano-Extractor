@@ -26,7 +26,7 @@ class QuokConnector(SQLConnector):
             SQLAlchemy connection string
         """
         # TODO: Replace this with a valid connection string for your source:
-        return f"sqlite:///{config["database"]}.db"
+        return f"sqlite:///{config['database']}.db"
 
     @staticmethod
     def to_jsonschema_type(
@@ -57,23 +57,23 @@ class QuokConnector(SQLConnector):
             "date": th.DateType(),
             "time": th.TimeType(),
             "numeric": th.NumberType(),
-            "largebinary": th.StringType()
+            "largebinary": th.StringType(),
+            "text": th.StringType(),
         }
 
         if isinstance(from_type, sqlalchemy.types.TypeEngine):
-            sql_type = from_type.__name__
+            sql_type = from_type.__class__.__name__
         else:
             sql_type = from_type
 
         if sql_type.lower() in type_mapping.keys():
-            return type_mapping.get(sql_type.lower())
+            return type_mapping.get(sql_type.lower()).type_dict
         
-        return type_mapping.get("string")
-
-    def get_schema_names(self, engine: sqlalchemy.Engine, inspected: sqlalchemy.Inspector) -> list[str]:
-        if "filtered_schema" in self.config:
-            return self.config["filtered_schema"].split(",")
-        return super().get_schema_names(engine, inspected)
+        return type_mapping.get("string").type_dict
+    
+    def get_object_names(self, engine: sqlalchemy.Engine, inspected: sqlalchemy.Inspector, schema_name: str) -> list[tuple[str, bool]]:
+        objects = self.config.get("filtered_objects")
+        return [(obj["table"], obj.get("is_view", False)) for obj in objects]
 
 class QuokStream(SQLStream):
     """Stream class for Quok streams."""
@@ -95,7 +95,7 @@ class QuokStream(SQLStream):
         # Optionally, add custom logic instead of calling the super().
         # This is helpful if the source database provides batch-optimized record
         # retrieval.
-        # If no overrides or optimizations are needed, you may delete this method.
+        # If no overrides or optimizations are needed, you may delete this method.        
         selected_columns = self.get_selected_schema().get("properties").keys()
         table = self.connector.get_table(
             full_table_name=self.fully_qualified_name,
